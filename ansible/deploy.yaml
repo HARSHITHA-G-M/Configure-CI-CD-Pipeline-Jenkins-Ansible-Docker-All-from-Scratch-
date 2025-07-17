@@ -1,0 +1,21 @@
+- name: Deploy Docker container on EC2
+  hosts: remote
+  become: true
+  tasks:
+    - name: Remove existing container
+      shell: docker rm -f flaskapp || true
+
+    - name: Remove old image
+      shell: docker rmi flaskapp:latest || true
+
+    - name: Copy image tar
+      copy:
+        src: /tmp/flaskapp.tar
+        dest: /tmp/flaskapp.tar
+
+    - name: Load image
+      shell: docker load -i /tmp/flaskapp.tar
+
+    - name: Run container
+      shell: docker run -d --name flaskapp -p 80:5000 flaskapp:latest
+
