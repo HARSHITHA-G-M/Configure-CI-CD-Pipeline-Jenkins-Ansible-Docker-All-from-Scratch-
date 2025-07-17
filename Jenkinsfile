@@ -31,7 +31,7 @@ pipeline {
 
         stage('Deploy via Ansible') {
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'ansible-ssh-key', keyFileVariable: 'SSH_KEY')]) {
+                withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY')]) {
                     sh '''
                         cp ${TAR_PATH} ansible/
                         cd ansible
