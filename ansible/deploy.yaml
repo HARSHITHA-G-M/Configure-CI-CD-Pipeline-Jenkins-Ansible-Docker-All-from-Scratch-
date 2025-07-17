@@ -1,3 +1,4 @@
+---
 - name: Deploy Docker container on EC2
   hosts: remote
   become: true
