@@ -2,20 +2,28 @@
   hosts: remote
   become: true
   tasks:
-    - name: Remove existing container
+    - name: Remove existing container if any
       shell: docker rm -f flaskapp || true
+      ignore_errors: yes
 
-    - name: Remove old image
+    - name: Remove old image if any
       shell: docker rmi flaskapp:latest || true
+      ignore_errors: yes
 
-    - name: Copy image tar
+    - name: Copy image tar to remote
       copy:
         src: /tmp/flaskapp.tar
         dest: /tmp/flaskapp.tar
+        mode: '0644'
 
-    - name: Load image
+    - name: Load Docker image from tar file
       shell: docker load -i /tmp/flaskapp.tar
 
-    - name: Run container
-      shell: docker run -d --name flaskapp -p 80:5000 flaskapp:latest
-
+    - name: Run Flask app container
+      community.docker.docker_container:
+        name: flaskapp
+        image: flaskapp:latest
+        state: started
+        ports:
+          - "80:5000"
+        restart_policy: always
