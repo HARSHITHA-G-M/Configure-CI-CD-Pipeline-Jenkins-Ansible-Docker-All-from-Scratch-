@@ -29,15 +29,17 @@ pipeline {
             }
         }
 
-        stage('Ansible Deploy to EC2') {
+        stage('Deploy via Ansible') {
             steps {
-                sh '''
-                    cp ${TAR_PATH} ansible/
-                    cd ansible
-                    ansible-playbook -i inventory.ini deploy.yaml \
-                      --private-key=~/.ssh/ansible-k8s.pem \
-                      -e "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
-                '''
+                withCredentials([sshUserPrivateKey(credentialsId: 'ansible-ssh-key', keyFileVariable: 'SSH_KEY')]) {
+                    sh '''
+                        cp ${TAR_PATH} ansible/
+                        cd ansible
+                        ansible-playbook -i inventory.ini deploy.yaml \
+                          --private-key=$SSH_KEY \
+                          -e "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
+                    '''
+                }
             }
         }
     }
