@@ -34,7 +34,7 @@ pipeline {
                 sh '''
                     cp ${TAR_PATH} ansible/
                     cd ansible
-                    ansible-playbook -i inventory.ini deploy.yml
+                    ansible-playbook -i inventory.ini deploy.yaml
                 '''
             }
         }
