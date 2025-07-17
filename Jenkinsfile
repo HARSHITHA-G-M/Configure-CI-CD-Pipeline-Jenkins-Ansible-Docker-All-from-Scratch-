@@ -9,7 +9,11 @@ pipeline {
     stages {
         stage('Clone Code') {
             steps {
-                git 'https://github.com/<your-username>/devops-pipeline.git'
+                git(
+                    branch: 'main',  // specify your branch if not main
+                    url: 'https://github.com/HARSHITHA-G-M/Configure-CI-CD-Pipeline-Jenkins-Ansible-Docker-All-from-Scratch-.git',
+                    credentialsId: 'github-pat'  // your Jenkins credential ID for GitHub PAT
+                )
             }
         }
 
@@ -36,4 +40,3 @@ pipeline {
         }
     }
 }
-
