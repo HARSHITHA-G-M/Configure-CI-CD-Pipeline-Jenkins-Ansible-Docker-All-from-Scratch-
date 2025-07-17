@@ -10,9 +10,9 @@ pipeline {
         stage('Clone Code') {
             steps {
                 git(
-                    branch: 'main',  // specify your branch if not main
+                    branch: 'master',  // changed from 'main' to 'master'
                     url: 'https://github.com/HARSHITHA-G-M/Configure-CI-CD-Pipeline-Jenkins-Ansible-Docker-All-from-Scratch-.git',
-                    credentialsId: 'github-pat'  // your Jenkins credential ID for GitHub PAT
+                    credentialsId: 'github-pat'  // your Jenkins GitHub credentials ID
                 )
             }
         }
